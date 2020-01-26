@@ -1,9 +1,14 @@
 package server
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"strings"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -40,17 +45,56 @@ func (s *Server) GetSubRouter(forPath string) *mux.Router {
 	return subRouter
 }
 
-// Listen will start listening
-func (s *Server) Listen() {
+// GetPort will return the port used by the web server
+func (s *Server) GetPort() string {
+	return s.port
+}
 
-	port := s.port
+func prepareForGracefulShutdown(server *http.Server) {
 
-	log.Printf("> Server stated ---> http://localhost:%v", port)
+	// Creat the channel for signal
+	stop := make(chan os.Signal, 1)
 
-	err := http.ListenAndServe(strings.Join([]string{"", port}, ":"), s.router)
+	// Observe the `SIGINT` signal
+	signal.Notify(stop, os.Interrupt)
 
-	if err != nil {
-		log.Println("web server encountered error")
-		log.Fatalln(err)
+	// Wait until we receive the message in the channel
+	<-stop
+
+	// Create a deadline to wait for.
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
+		log.Println(err.Error())
 	}
+
+	log.Println("shutting down web server")
+	os.Exit(0)
+}
+
+// Listen will start listening
+func (s *Server) Listen(cb func()) {
+
+	// Initialize the http server
+	server := &http.Server{
+		Addr:    strings.Join([]string{"0.0.0.0", s.port}, ":"),
+		Handler: s.router,
+	}
+
+	// Run our server in a goroutine so that it doesn't block.
+	go func() {
+		if err := server.ListenAndServe(); err != nil {
+			fmt.Println()
+			log.Println("web server encountered error")
+			fmt.Println()
+			panic(err)
+		}
+	}()
+
+	// Run the callbacck in a goroutine
+	go cb()
+
+	// prepare the webserver for graceful shutdown
+	prepareForGracefulShutdown(server)
 }
