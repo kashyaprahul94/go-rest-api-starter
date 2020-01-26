@@ -18,16 +18,11 @@ type Server struct {
 	router *mux.Router
 }
 
-// New creates the new webserver
+// New creates the instance of new http web server \n
+// It accepts a port as an argument on which http web server will listen on
 func New(port string) *Server {
 
 	router := mux.NewRouter()
-
-	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"message": "get called"}`))
-	}).Methods(http.MethodGet)
 
 	serverInstace := &Server{
 		port:   port,
@@ -35,6 +30,14 @@ func New(port string) *Server {
 	}
 
 	return serverInstace
+}
+
+// GetSubRouter will create an empty route and return the subrouter instance
+func (s *Server) GetSubRouter(forPath string) *mux.Router {
+
+	subRouter := s.router.PathPrefix(forPath).Subrouter()
+
+	return subRouter
 }
 
 // Listen will start listening
