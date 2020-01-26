@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
+
+	"github.com/kashyaprahul94/go-rest-api-starter/pkg/app"
 )
 
 func main() {
@@ -15,7 +16,7 @@ func main() {
 
 func run() error {
 
-	fmt.Println("Project should work")
+	app.Start()
 
 	return nil
 }
