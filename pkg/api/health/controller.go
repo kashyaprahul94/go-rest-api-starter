@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	services "github.com/kashyaprahul94/go-rest-api-starter/pkg/api/health/services"
 )
 
 // BasePath on which this route would be mounted
@@ -17,14 +16,14 @@ type Controller struct {
 	router *mux.Router
 
 	// service which does all the necessary operations
-	service *services.Health
+	service *Service
 }
 
-// New creates instance of Heatlh Controller
-func New(router *mux.Router) *Controller {
+// NewHealthController creates instance of Heatlh Controller
+func NewHealthController(router *mux.Router) *Controller {
 
 	// Create new instance of service
-	serviceInstance := services.New()
+	serviceInstance := NewHealthService()
 
 	// Initialize controller
 	controller := &Controller{

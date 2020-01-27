@@ -1,22 +1,20 @@
-package services
+package health
 
 import (
 	"encoding/json"
 	"fmt"
-
-	"github.com/kashyaprahul94/go-rest-api-starter/pkg/api/health/models"
 )
 
-// Health is the basic struct
-type Health struct{}
+// Service is the basic struct
+type Service struct{}
 
-// New creates the instance of the health service
-func New() *Health {
-	return &Health{}
+// NewHealthService creates the instance of the health service
+func NewHealthService() *Service {
+	return &Service{}
 }
 
 // ToJSON converts Health model to JSON
-func (s *Health) ToJSON(input *models.Health) []byte {
+func (s *Service) ToJSON(input *Health) []byte {
 	result, err := json.Marshal(input)
 
 	if err != nil {
@@ -27,9 +25,9 @@ func (s *Health) ToJSON(input *models.Health) []byte {
 }
 
 // FromJSON converts JSON to Health model
-func (s *Health) FromJSON(input []byte) models.Health {
+func (s *Service) FromJSON(input []byte) Health {
 
-	var health models.Health
+	var health Health
 
 	err := json.Unmarshal(input, &health)
 
@@ -41,9 +39,9 @@ func (s *Health) FromJSON(input []byte) models.Health {
 }
 
 // GetHealth retreives the health of the system
-func (s *Health) GetHealth() *models.Health {
+func (s *Service) GetHealth() *Health {
 
-	health := &models.Health{
+	health := &Health{
 		Status:  "OK",
 		Version: "1.0.0",
 	}

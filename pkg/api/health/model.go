@@ -1,4 +1,4 @@
-package models
+package health
 
 // Health is the model
 type Health struct {
