@@ -32,6 +32,6 @@ func Start() {
 func registerModules(s *server.Server) {
 
 	// Health module
-	health.NewHealthController(s.GetSubRouter(health.BasePath))
+	health.New(s.GetSubRouter(health.BasePath))
 
 }
