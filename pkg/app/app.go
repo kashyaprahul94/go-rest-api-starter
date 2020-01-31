@@ -2,7 +2,6 @@ package app
 
 import (
 	"log"
-	"os"
 
 	"github.com/kashyaprahul94/go-rest-api-starter/pkg/api/health"
 	"github.com/kashyaprahul94/go-rest-api-starter/pkg/api/server"
@@ -11,11 +10,8 @@ import (
 // Start method starts the app
 func Start() {
 
-	port := os.Getenv("PORT")
-
-	if port == "" {
-		panic("no http port defined")
-	}
+	// Get port from config
+	port := Config.Port()
 
 	// Create new instance of web server
 	serverInstance := server.New(port)
