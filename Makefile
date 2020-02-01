@@ -12,6 +12,12 @@ test:
 
 #---------------------#
 
+# To install all dependencies
+install:
+	go mod download
+
+#---------------------#
+
 # To compile the go binary
 compile:
 	go build -o bin/rest-api ./cmd/rest-api-starter/rest-api.go
@@ -25,7 +31,7 @@ tidy:
 #---------------------#
 
 # To build the project, remove any unused deps, and compile the project
-build: tidy compile
+build: install tidy compile
 
 #---------------------#
 
