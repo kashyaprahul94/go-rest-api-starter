@@ -15,6 +15,3 @@
 
 .env
 .env.*
-
-dev.sh
-test.sh
