@@ -3,14 +3,16 @@ package health
 import (
 	"net/http"
 
-	"github.com/gorilla/mux"
+	router "github.com/julienschmidt/httprouter"
+
+	"github.com/kashyaprahul94/go-rest-api-starter/pkg/api/server"
 )
 
 // BasePath on which this route would be mounted
 const BasePath = "/health"
 
 // NewHealthController creates instance of Heatlh Controller
-func NewHealthController(router *mux.Router) *Controller {
+func NewHealthController(router *server.RouteGroup) *Controller {
 
 	// Create new instance of service
 	serviceInstance := NewHealthService()
@@ -29,7 +31,7 @@ func NewHealthController(router *mux.Router) *Controller {
 }
 
 // GetRouter return this router of Heatlh Controller
-func (hc *Controller) GetRouter() *mux.Router {
+func (hc *Controller) GetRouter() *server.RouteGroup {
 	return hc.router
 }
 
@@ -40,11 +42,14 @@ func (hc *Controller) registerRoutes() {
 	router := hc.GetRouter()
 
 	// Register / route to send health of the system
-	router.HandleFunc("/", hc.get).Methods(http.MethodGet)
+	router.GET("/", hc.get)
+
+	// Register / route to send health of the system
+	router.POST("/test", hc.get)
 }
 
 // get is used for - GET -> /health
-func (hc *Controller) get(w http.ResponseWriter, r *http.Request) {
+func (hc *Controller) get(w http.ResponseWriter, r *http.Request, _ router.Params) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 

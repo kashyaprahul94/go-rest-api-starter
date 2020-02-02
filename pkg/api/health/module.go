@@ -1,6 +1,8 @@
 package health
 
-import "github.com/gorilla/mux"
+import (
+	"github.com/kashyaprahul94/go-rest-api-starter/pkg/api/server"
+)
 
 // Module is responsible for health management
 type Module struct {
@@ -10,7 +12,7 @@ type Module struct {
 }
 
 // New creates new instance of HealthModule
-func New(router *mux.Router) *Module {
+func New(router *server.RouteGroup) *Module {
 
 	// create new instance of controller
 	controller := NewHealthController(router)

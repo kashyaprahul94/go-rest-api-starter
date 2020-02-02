@@ -1,6 +1,8 @@
 package health
 
-import "github.com/gorilla/mux"
+import (
+	"github.com/kashyaprahul94/go-rest-api-starter/pkg/api/server"
+)
 
 // Health is the model
 type Health struct {
@@ -16,7 +18,7 @@ type Health struct {
 type Controller struct {
 
 	// router instance to handle all the incoming http request
-	router *mux.Router
+	router *server.RouteGroup
 
 	// service which does all the necessary operations
 	service *Service
