@@ -43,9 +43,6 @@ func (hc *Controller) registerRoutes() {
 
 	// Register / route to send health of the system
 	router.GET("/", hc.get)
-
-	// Register / route to send health of the system
-	router.POST("/test", hc.get)
 }
 
 // get is used for - GET -> /health
