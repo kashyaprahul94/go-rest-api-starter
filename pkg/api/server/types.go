@@ -1,6 +1,8 @@
 package server
 
-import "github.com/gorilla/mux"
+import (
+	router "github.com/julienschmidt/httprouter"
+)
 
 // HTTPServer is the instance for web server
 type HTTPServer struct {
@@ -9,5 +11,10 @@ type HTTPServer struct {
 	port string
 
 	// router instance to provide routing
-	router *mux.Router
+	router *Router
+}
+
+// Router is the wrapper on top of julienschmidt/httprouter
+type Router struct {
+	*router.Router
 }
