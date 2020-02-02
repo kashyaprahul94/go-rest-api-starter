@@ -10,29 +10,29 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gorilla/mux"
+	router "github.com/julienschmidt/httprouter"
 )
 
 // New creates the instance of new http web server \n
 // It accepts a port as an argument on which http web server will listen on
 func New(port string) *HTTPServer {
 
-	router := mux.NewRouter()
+	router := router.New()
+	router.RedirectTrailingSlash = false
 
 	serverInstace := &HTTPServer{
-		port:   port,
-		router: router,
+		port: port,
+		router: &Router{
+			Router: router,
+		},
 	}
 
 	return serverInstace
 }
 
 // GetSubRouter will create an empty route and return the subrouter instance
-func (hs *HTTPServer) GetSubRouter(forPath string) *mux.Router {
-
-	subRouter := hs.router.PathPrefix(forPath).Subrouter()
-
-	return subRouter
+func (hs *HTTPServer) GetSubRouter(namespace string) *RouteGroup {
+	return hs.router.NewGroup(namespace)
 }
 
 // GetPort will return the port used by the web server
