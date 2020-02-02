@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -93,8 +92,6 @@ func (r *RouteGroup) subPath(path string) string {
 	}
 
 	fullPath := strings.Join([]string{r.g, path}, "")
-
-	fmt.Println(fullPath)
 
 	return fullPath
 }
