@@ -9,16 +9,6 @@ import (
 // BasePath on which this route would be mounted
 const BasePath = "/health"
 
-// Controller is kind of API Controller responsible for heatlh
-type Controller struct {
-
-	// router instance to handle all the incoming http request
-	router *mux.Router
-
-	// service which does all the necessary operations
-	service *Service
-}
-
 // NewHealthController creates instance of Heatlh Controller
 func NewHealthController(router *mux.Router) *Controller {
 
