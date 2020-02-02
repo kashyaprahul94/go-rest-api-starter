@@ -40,6 +40,19 @@ func (hs *HTTPServer) GetPort() string {
 	return hs.port
 }
 
+func (hs *HTTPServer) prepareGlobalMiddlewares() {
+	hs.router.GlobalOPTIONS = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Header.Get("Access-Control-Request-Method") != "" {
+
+			header := w.Header()
+			header.Set("Access-Control-Allow-Methods", r.Header.Get("Allow"))
+			header.Set("Access-Control-Allow-Origin", "*")
+		}
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+}
+
 func prepareForGracefulShutdown(server *http.Server) {
 
 	// Creat the channel for signal
@@ -71,6 +84,9 @@ func (hs *HTTPServer) Listen(cb func()) {
 		Addr:    strings.Join([]string{"0.0.0.0", hs.port}, ":"),
 		Handler: hs.router,
 	}
+
+	// Prepare middlewares
+	hs.prepareGlobalMiddlewares()
 
 	// Run our server in a goroutine so that it doesn't block.
 	go func() {
