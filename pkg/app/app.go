@@ -25,7 +25,7 @@ func Start() {
 	})
 }
 
-func registerModules(s *server.Server) {
+func registerModules(s *server.HTTPServer) {
 
 	// Health module
 	health.New(s.GetSubRouter(health.BasePath))

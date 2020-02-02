@@ -13,23 +13,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Server is the instance for web server
-type Server struct {
-
-	// port on which web seever will listen to
-	port string
-
-	// router instance to provide routing
-	router *mux.Router
-}
-
 // New creates the instance of new http web server \n
 // It accepts a port as an argument on which http web server will listen on
-func New(port string) *Server {
+func New(port string) *HTTPServer {
 
 	router := mux.NewRouter()
 
-	serverInstace := &Server{
+	serverInstace := &HTTPServer{
 		port:   port,
 		router: router,
 	}
@@ -38,16 +28,16 @@ func New(port string) *Server {
 }
 
 // GetSubRouter will create an empty route and return the subrouter instance
-func (s *Server) GetSubRouter(forPath string) *mux.Router {
+func (hs *HTTPServer) GetSubRouter(forPath string) *mux.Router {
 
-	subRouter := s.router.PathPrefix(forPath).Subrouter()
+	subRouter := hs.router.PathPrefix(forPath).Subrouter()
 
 	return subRouter
 }
 
 // GetPort will return the port used by the web server
-func (s *Server) GetPort() string {
-	return s.port
+func (hs *HTTPServer) GetPort() string {
+	return hs.port
 }
 
 func prepareForGracefulShutdown(server *http.Server) {
@@ -74,12 +64,12 @@ func prepareForGracefulShutdown(server *http.Server) {
 }
 
 // Listen will start listening
-func (s *Server) Listen(cb func()) {
+func (hs *HTTPServer) Listen(cb func()) {
 
 	// Initialize the http server
 	server := &http.Server{
-		Addr:    strings.Join([]string{"0.0.0.0", s.port}, ":"),
-		Handler: s.router,
+		Addr:    strings.Join([]string{"0.0.0.0", hs.port}, ":"),
+		Handler: hs.router,
 	}
 
 	// Run our server in a goroutine so that it doesn't block.
