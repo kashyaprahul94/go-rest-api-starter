@@ -99,11 +99,6 @@ func (r *RouteGroup) subPath(path string) string {
 	return fullPath
 }
 
-// Router is used to create a new route group
-func (r *RouteGroup) Router() *router.Router {
-	return r.r.Router
-}
-
 // NewGroup is used to create a new route group
 func (r *Router) NewGroup(path string) *RouteGroup {
 	return newRouteGroup(r, path)
