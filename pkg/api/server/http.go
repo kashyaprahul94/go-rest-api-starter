@@ -98,7 +98,7 @@ func (hs *HTTPServer) Listen(cb func()) {
 		}
 	}()
 
-	// Run the callbacck in a goroutine
+	// Run the callback in a goroutine
 	go cb()
 
 	// prepare the webserver for graceful shutdown
