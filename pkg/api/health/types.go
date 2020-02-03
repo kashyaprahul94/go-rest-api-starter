@@ -18,7 +18,7 @@ type Health struct {
 type Controller struct {
 
 	// router instance to handle all the incoming http request
-	router *server.RouteGroup
+	router *server.SubRouter
 
 	// service which does all the necessary operations
 	service *Service

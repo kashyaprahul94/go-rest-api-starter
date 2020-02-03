@@ -31,8 +31,8 @@ func New(port string) *HTTPServer {
 }
 
 // GetSubRouter will create an empty route and return the subrouter instance
-func (hs *HTTPServer) GetSubRouter(namespace string) *RouteGroup {
-	return hs.router.NewGroup(namespace)
+func (hs *HTTPServer) GetSubRouter(namespace string) *SubRouter {
+	return hs.router.NewSubRouter(namespace)
 }
 
 // GetPort will return the port used by the web server

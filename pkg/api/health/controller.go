@@ -12,7 +12,7 @@ import (
 const BasePath = "/health"
 
 // NewHealthController creates instance of Heatlh Controller
-func NewHealthController(router *server.RouteGroup) *Controller {
+func NewHealthController(router *server.SubRouter) *Controller {
 
 	// Create new instance of service
 	serviceInstance := NewHealthService()
@@ -31,7 +31,7 @@ func NewHealthController(router *server.RouteGroup) *Controller {
 }
 
 // GetRouter return this router of Heatlh Controller
-func (hc *Controller) GetRouter() *server.RouteGroup {
+func (hc *Controller) GetRouter() *server.SubRouter {
 	return hc.router
 }
 

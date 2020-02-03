@@ -12,7 +12,7 @@ type Module struct {
 }
 
 // New creates new instance of HealthModule
-func New(router *server.RouteGroup) *Module {
+func New(router *server.SubRouter) *Module {
 
 	// create new instance of controller
 	controller := NewHealthController(router)
