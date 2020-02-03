@@ -14,8 +14,11 @@ type Module struct {
 // New creates new instance of HealthModule
 func New(router *server.SubRouter) *Module {
 
-	// create new instance of controller
-	controller := NewHealthController(router)
+	// create new instance of service layer
+	service := NewHealthService()
+
+	// create new instance of controller lauer
+	controller := NewHealthController(router, service)
 
 	// Return the module instance
 	return &Module{

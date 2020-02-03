@@ -12,15 +12,12 @@ import (
 const BasePath = "/health"
 
 // NewHealthController creates instance of Heatlh Controller
-func NewHealthController(router *server.SubRouter) *Controller {
-
-	// Create new instance of service
-	serviceInstance := NewHealthService()
+func NewHealthController(router *server.SubRouter, service *Service) *Controller {
 
 	// Initialize controller
 	controller := &Controller{
 		router:  router,
-		service: serviceInstance,
+		service: service,
 	}
 
 	// Register the routes
