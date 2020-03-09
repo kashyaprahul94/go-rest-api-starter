@@ -31,12 +31,12 @@ tidy:
 #---------------------#
 
 # To build the project, remove any unused deps, and compile the project
-build: install tidy compile
+build: tidy compile
 
 #---------------------#
 
 
 #---------------------#
 # .PHONY
-.phony: dev test compile tidy build
+.phony: dev test install compile tidy build
 #---------------------#
