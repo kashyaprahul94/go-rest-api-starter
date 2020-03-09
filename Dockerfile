@@ -8,11 +8,19 @@ FROM golang:1.13-stretch as builder
 # Perform all operations inside `/app` directory
 WORKDIR /app
 
-# Copy all contents from source directory to work directory
-COPY . /app
+# Copy only dependencies related files first
+COPY go.mod .
+COPY go.sum .
+COPY Makefile .
 
-# Build the project to generate binary for `linux` architecture
-RUN CGO_ENABLED=0 GOOS=linux make build
+# Download all deps first
+RUN make install
+
+# Copy all contents from source directory to work directory
+COPY . .
+
+# Build the project to generate binary for `linux 64` architecture
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 make build
 
 
 ##################
