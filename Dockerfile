@@ -19,8 +19,8 @@ RUN CGO_ENABLED=0 GOOS=linux make build
 # Runner region #
 ##################
 
-# To run the binary, use alpine image ( super tiny )
-FROM alpine:latest
+# To run the binary, use `scratch` image ( super tiny )
+FROM scratch
 
 # Perform all operations inside `/app` directory
 WORKDIR /app
