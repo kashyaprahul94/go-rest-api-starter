@@ -40,7 +40,18 @@ func (hs *HTTPServer) GetPort() string {
 	return hs.port
 }
 
-func (hs *HTTPServer) prepareGlobalMiddlewares() {
+// Logger middleware
+func getLoggerMiddleware() func(req *http.Request) {
+	log.SetFormatter(&log.JSONFormatter{})
+
+	return func(req *http.Request) {
+		log.Infoln(req)
+	}
+}
+
+func (hs *HTTPServer) prepareGlobalMiddlewares(next http.Handler) http.Handler {
+
+	// Middleware for Pre-flight requests
 	hs.router.GlobalOPTIONS = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Header.Get("Access-Control-Request-Method") != "" {
 
@@ -50,6 +61,19 @@ func (hs *HTTPServer) prepareGlobalMiddlewares() {
 		}
 
 		w.WriteHeader(http.StatusNoContent)
+	})
+
+	// Init the logger middelware
+	logger := getLoggerMiddleware()
+
+	// Use all the middlewares for http requests here
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+
+		// Log the incoming http request first
+		logger(req)
+
+		// Then call the underlying handler
+		next.ServeHTTP(w, req)
 	})
 }
 
@@ -79,14 +103,14 @@ func prepareForGracefulShutdown(server *http.Server) {
 // Listen will start listening
 func (hs *HTTPServer) Listen(cb func()) {
 
+	// Prepare middlewares
+	routerWithMiddlewares := hs.prepareGlobalMiddlewares(hs.router)
+
 	// Initialize the http server
 	server := &http.Server{
 		Addr:    strings.Join([]string{"0.0.0.0", hs.port}, ":"),
-		Handler: hs.router,
+		Handler: routerWithMiddlewares,
 	}
-
-	// Prepare middlewares
-	hs.prepareGlobalMiddlewares()
 
 	// Run our server in a goroutine so that it doesn't block.
 	go func() {
