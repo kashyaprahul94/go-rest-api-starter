@@ -1,10 +1,10 @@
 package app
 
 import (
-	"log"
-
 	"github.com/kashyaprahul94/go-rest-api-starter/pkg/api/health"
 	"github.com/kashyaprahul94/go-rest-api-starter/pkg/api/server"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // Start method starts the app
@@ -21,7 +21,7 @@ func Start() {
 
 	// Start listening on the webserver
 	serverInstance.Listen(func() {
-		log.Printf("> Server stated ---> http://localhost:%v", port)
+		log.Infof("> Server stated ---> http://localhost:%v", port)
 	})
 }
 
@@ -29,5 +29,4 @@ func registerModules(s *server.HTTPServer) {
 
 	// Health module
 	health.New(s.GetSubRouter(health.BasePath))
-
 }

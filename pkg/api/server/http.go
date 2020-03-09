@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -11,6 +10,7 @@ import (
 	"time"
 
 	router "github.com/julienschmidt/httprouter"
+	log "github.com/sirupsen/logrus"
 )
 
 // New creates the instance of new http web server \n
@@ -69,10 +69,10 @@ func prepareForGracefulShutdown(server *http.Server) {
 	defer cancel()
 
 	if err := server.Shutdown(ctx); err != nil {
-		log.Println(err.Error())
+		log.Errorln(err.Error())
 	}
 
-	log.Println("shutting down web server")
+	log.Infoln("shutting down web server")
 	os.Exit(0)
 }
 
@@ -92,7 +92,7 @@ func (hs *HTTPServer) Listen(cb func()) {
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
 			fmt.Println()
-			log.Println("web server encountered error")
+			log.Infoln("web server encountered error")
 			fmt.Println()
 			panic(err)
 		}
